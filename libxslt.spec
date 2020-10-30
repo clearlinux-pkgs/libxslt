@@ -6,11 +6,11 @@
 #
 Name     : libxslt
 Version  : 1.1.34
-Release  : 49
+Release  : 50
 URL      : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
 Source0  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
-Source1 : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz.asc
-Summary  : XML stylesheet transformation library
+Source1  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz.asc
+Summary  : Library providing the GNOME XSLT engine
 Group    : Development/Tools
 License  : MIT
 Requires: libxslt-bin = %{version}-%{release}
@@ -57,7 +57,6 @@ Group: Development
 Requires: libxslt-lib = %{version}-%{release}
 Requires: libxslt-bin = %{version}-%{release}
 Provides: libxslt-devel = %{version}-%{release}
-Requires: libxslt = %{version}-%{release}
 Requires: libxslt = %{version}-%{release}
 
 %description dev
@@ -120,6 +119,7 @@ man components for the libxslt package.
 
 %prep
 %setup -q -n libxslt-1.1.34
+cd %{_builddir}/libxslt-1.1.34
 pushd ..
 cp -a libxslt-1.1.34 build32
 popd
@@ -129,16 +129,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572794987
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1604078909
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fcf-protection=full -ffat-lto-objects -flto=4 -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -O3 -fcf-protection=full -ffat-lto-objects -flto=4 -fstack-protector-strong "
-export FFLAGS="$CFLAGS -O3 -fcf-protection=full -ffat-lto-objects -flto=4 -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -O3 -fcf-protection=full -ffat-lto-objects -flto=4 -fstack-protector-strong "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -156,12 +155,12 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1572794987
+export SOURCE_DATE_EPOCH=1604078909
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libxslt
 cp %{_builddir}/libxslt-1.1.34/COPYING %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa

@@ -9,17 +9,13 @@ fwupd
 gcc
 gcc7
 gcc8
+gcc9
 gtk-doc
 kconfigwidgets
 kdoctools
-kimchi
 kio
 kservice
 kwallet
-libfprint
-libgfortran-avx
-libgfortran-compat-soname3
-libgfortran-compat-soname4
 libkcapi
 libmodulemd
 libvirt
@@ -32,7 +28,6 @@ pyside2-setup
 raptor2
 tdb
 wayland
-wok
 xdg-user-dirs
 xdg-utils
 xmlb
