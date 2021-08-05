@@ -6,7 +6,7 @@
 #
 Name     : libxslt
 Version  : 1.1.34
-Release  : 51
+Release  : 52
 URL      : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
 Source0  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
 Source1  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz.asc
@@ -35,6 +35,10 @@ BuildRequires : pkgconfig(libxml-2.0)
 BuildRequires : util-linux
 BuildRequires : xz-dev
 BuildRequires : zlib-dev
+Patch1: 0001-Also-search-parent-dir-for-source-XML-when-fuzzing.patch
+Patch2: 0002-Stop-using-maxParserDepth-XPath-limit.patch
+Patch3: 0003-Transfer-XPath-limits-to-XPtr-context.patch
+Patch4: 0004-Don-t-set-maxDepth-in-XPath-contexts.patch
 
 %description
 This C library allows to transform XML files into other XML files
@@ -120,6 +124,10 @@ man components for the libxslt package.
 %prep
 %setup -q -n libxslt-1.1.34
 cd %{_builddir}/libxslt-1.1.34
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 pushd ..
 cp -a libxslt-1.1.34 build32
 popd
@@ -129,15 +137,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604078909
+export SOURCE_DATE_EPOCH=1628202697
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -160,7 +168,7 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1604078909
+export SOURCE_DATE_EPOCH=1628202697
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libxslt
 cp %{_builddir}/libxslt-1.1.34/COPYING %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa

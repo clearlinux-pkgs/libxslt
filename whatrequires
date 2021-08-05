@@ -3,6 +3,7 @@ asciidoc
 boinc-client
 cgit
 colord
+compat-gcc-10
 dracut
 firewalld
 fwupd

@@ -1,10 +1,5 @@
-#cve-2017-5029.patch
-#0004-Make-generate-id-deterministic.patch
 #CVE-2015-9019.nopatch
-#pcfile.patch
-#CVE-2019-11068.patch
-#CVE-2019-13117.patch
-#c75b811de0afeea6acf19c99a755b8e1c0585aa9.patch
-#8a5dcc6e9da769bb49ce6a750cc0ef094d621b43.patch
-#CVE-2019-13118.patch
-#CVE-2019-18197.patch
+0001-Also-search-parent-dir-for-source-XML-when-fuzzing.patch
+0002-Stop-using-maxParserDepth-XPath-limit.patch
+0003-Transfer-XPath-limits-to-XPtr-context.patch
+0004-Don-t-set-maxDepth-in-XPath-contexts.patch
