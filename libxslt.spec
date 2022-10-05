@@ -6,7 +6,7 @@
 #
 Name     : libxslt
 Version  : 1.1.34
-Release  : 52
+Release  : 53
 URL      : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
 Source0  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz
 Source1  : http://xmlsoft.org/sources/libxslt-1.1.34.tar.gz.asc
@@ -137,20 +137,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1628202697
+export SOURCE_DATE_EPOCH=1664931006
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -168,17 +168,23 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1628202697
+export SOURCE_DATE_EPOCH=1664931006
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libxslt
-cp %{_builddir}/libxslt-1.1.34/COPYING %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa
-cp %{_builddir}/libxslt-1.1.34/Copyright %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa
-cp %{_builddir}/libxslt-1.1.34/tests/docbook/dtd/3.1.7/COPYRIGHT %{buildroot}/usr/share/package-licenses/libxslt/16937d0bf2e4a1b5cc4e3b45c7282e9c7aa658cd
+cp %{_builddir}/libxslt-%{version}/COPYING %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa || :
+cp %{_builddir}/libxslt-%{version}/Copyright %{buildroot}/usr/share/package-licenses/libxslt/0005480dce93b70f7d62fa311f49e3c6c1a6dcfa || :
+cp %{_builddir}/libxslt-%{version}/tests/docbook/dtd/3.1.7/COPYRIGHT %{buildroot}/usr/share/package-licenses/libxslt/16937d0bf2e4a1b5cc4e3b45c7282e9c7aa658cd || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi

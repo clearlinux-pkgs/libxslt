@@ -8,12 +8,11 @@ dracut
 firewalld
 fwupd
 gcc
+gcc11
 gcc7
 gcc8
 gcc9
-gtk-doc
 kconfigwidgets
-kdoctools
 kio
 kservice
 kwallet
